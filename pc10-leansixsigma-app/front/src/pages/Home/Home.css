@@ -1,0 +1,113 @@
+.home-container {
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+  /* Ya no necesitas definir font-family ni background aquí, lo hereda del body */
+}
+
+/* Header superior fijo */
+.header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 16px 32px;
+  border-bottom: 1px solid #111111;
+  background-color: #000000cb;
+}
+
+.brand {
+  font-size: 1.25rem;
+  font-weight: 600;
+  color: #ffffff;
+}
+
+.profile-btn {
+  font-size: 0.95rem;
+  color: #f3f4f6;
+  cursor: pointer;
+  padding: 6px 12px;
+  border-radius: 999px;
+  border: 1px solid #f3f4f6;
+}
+
+/* Contenido central */
+.main-content {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 24px;
+}
+
+.main-inner {
+  width: 100%;
+  max-width: 720px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  align-items: center;
+}
+
+.title {
+  font-size: 1.8rem;
+  font-weight: 600;
+  text-align: center;
+}
+
+.card {
+  width: 100%;
+  max-width: 720px;
+  background-color: #ffffff;
+  border-radius: 16px;
+  border: 1px solid var(--border-color);
+  padding: 24px 28px;
+  box-shadow: 0 12px 30px rgba(15, 23, 42, 0.06);
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.card h1 {
+  font-size: 1.8rem;
+  margin-bottom: 4px;
+}
+
+.subtitle {
+  font-size: 0.95rem;
+  color: var(--text-secondary);
+}
+
+.problem-input {
+  width: 100%;
+  min-height: 150px;
+  resize: vertical;
+  padding: 12px 14px;
+  border-radius: 10px;
+  border: 1px solid var(--border-color);
+  font-family: inherit;
+  font-size: 0.95rem;
+  line-height: 1.5;
+}
+
+.problem-input:focus {
+  outline: none;
+  border-color: var(--primary-color);
+  box-shadow: 0 0 0 1px var(--primary-color);
+}
+
+button.action-btn {
+  align-self: flex-end;
+  background-color: #000000;
+  color: #f9fafb;
+  border-radius: 999px;
+  padding-inline: 20px;
+}
+
+button.action-btn:hover {
+  background-color: #111827;
+}
+
+button.action-btn:disabled {
+  background-color: #9ca3af;
+  cursor: not-allowed;
+}
