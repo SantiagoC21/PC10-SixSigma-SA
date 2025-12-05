@@ -4,6 +4,7 @@ from typing import List, Dict, Any, Optional
 from pydantic import Field
 from typing import Literal
 from enum import Enum
+
 class AnalysisRequest(BaseModel):
     tool_name: str              
     data: List[Dict[str, Any]]  
@@ -185,3 +186,188 @@ class StratificationParams(BaseModel):
     target_column: str = Field(..., description="Columna numérica a analizar (ej: 'Defectos', 'Tiempo')")
     # Opcional: Qué operación priorizar en el gráfico
     metric: str = Field("mean", description="Métrica principal para el gráfico: 'count', 'sum', 'mean'")
+
+
+    # backend/app/schemas.py (Añade esto)
+
+class FmeaItem(BaseModel):
+    function_part: str = Field(..., description="Función o Parte del proceso")
+    failure_mode: str = Field(..., description="Modo potencial de falla")
+    effect: str = Field(..., description="Efecto potencial de la falla")
+    severity: int = Field(..., ge=1, le=10, description="Severidad (S)")
+    cause: str = Field(..., description="Causa potencial")
+    occurrence: int = Field(..., ge=1, le=10, description="Ocurrencia (O)")
+    current_controls: str = Field(..., description="Controles actuales")
+    detection: int = Field(..., ge=1, le=10, description="Detección (D)")
+    recommended_action: Optional[str] = Field(None, description="Acción recomendada (Opcional)")
+
+# El 'data' será: List[FmeaItem]
+
+# backend/app/schemas.py (Añade esto)
+
+class GageItem(BaseModel):
+    operator: str = Field(..., description="Nombre o ID del operador")
+    part: str = Field(..., description="ID de la pieza o parte medida")
+    measurement: float = Field(..., description="Valor medido")
+
+# El 'data' será: List[GageItem]
+class GageParams(BaseModel):
+    tolerance: Optional[float] = Field(None, description="Tolerancia del proceso (USL - LSL) para calcular %Tolerancia")
+    sigma_multiplier: float = Field(6.0, description="Multiplicador Sigma (usualmente 6 o 5.15)")
+
+# backend/app/schemas.py (Añade esto)
+
+class RunChartParams(BaseModel):
+    center_line: Literal["mean", "median"] = "median" # Six Sigma prefiere Mediana para Run Charts
+
+# El 'data' será: [{"time": "08:00", "value": 10}, {"time": "09:00", "value": 12}...]
+# backend/app/schemas.py (Añade esto)
+
+class HistogramParams(BaseModel):
+    bins: Optional[int] = Field(None, description="Número de barras (bins). Si se omite, es automático.")
+    normality_test: bool = Field(True, description="Ejecutar prueba de normalidad")
+
+# backend/app/schemas.py (Añade esto)
+
+class ConfidenceIntervalParams(BaseModel):
+    confidence_level: float = Field(0.95, ge=0.0, le=1.0, description="Nivel de confianza (ej: 0.95 para 95%)")
+    variable_type: Literal["mean", "proportion"] = Field("mean", description="Tipo de estimación: 'mean' (Media) o 'proportion' (Proporción)")
+    target_value: Optional[float] = Field(None, description="Valor objetivo a comparar (ej: Meta del cliente)")
+
+# El 'data' será una lista de valores: [{"valor": 10.5}, {"valor": 10.2}...]
+# Para proporción, pueden ser numéricos (0/1) o texto ("Pasa"/"Falla").
+
+# backend/app/schemas.py (Añade esto)
+
+class ProcessStep(BaseModel):
+    id: str = Field(..., description="Identificador único del paso (ej: 'step1')")
+    label: str = Field(..., description="Texto del paso (ej: 'Verificar datos')")
+    type: Literal["start", "task", "decision", "end"] = Field("task", description="Tipo de símbolo")
+    next_ids: List[str] = Field(default=[], description="Lista de IDs a los que se conecta este paso")
+    role: Optional[str] = Field(None, description="Responsable (útil para diagramas de carril/swimlane)")
+
+# El 'data' será: List[ProcessStep]
+
+# backend/app/schemas.py (Añade esto)
+
+class RaciRow(BaseModel):
+    task: str = Field(..., description="La tarea o actividad")
+    assignments: Dict[str, str] = Field(..., description="Diccionario Rol->Asignación. Ej: {'Gerente': 'A', 'Analista': 'R'}")
+
+# El 'data' será: List[RaciRow]
+
+# backend/app/schemas.py (Añade esto)
+
+class ControlPlanItem(BaseModel):
+    process_step: str = Field(..., description="Paso del proceso o máquina")
+    characteristic: str = Field(..., description="Característica a controlar (ej: Temperatura, Tiempo)")
+    specification: str = Field(..., description="Especificación / Tolerancia (ej: 100 +/- 5)")
+    measurement_method: str = Field(..., description="Cómo se mide (ej: Sensor, Visual)")
+    sample_size_freq: str = Field(..., description="Tamaño y frecuencia (ej: 5 cada hora)")
+    control_method: str = Field(..., description="Método de control (ej: Gráfica X-R, Poka Yoke)")
+    reaction_plan: str = Field(..., description="Qué hacer si falla (ej: Detener línea y calibrar)")
+    responsible: str = Field(..., description="Quién ejecuta la acción")
+
+# El 'data' será: List[ControlPlanItem]
+
+
+# backend/app/schemas.py (Añade esto)
+
+class ParetoItem(BaseModel):
+    label: str = Field(..., description="Categoría del defecto o ítem (ej: 'Rotura', 'Retraso')")
+    value: float = Field(..., gt=0, description="Valor (Frecuencia, Costo, Tiempo)")
+
+class ParetoParams(BaseModel):
+    limit_a: int = Field(80, description="Límite porcentual para Clase A (Vitales)")
+    limit_b: int = Field(95, description="Límite porcentual para Clase B (A + B)")
+    # El resto será C
+
+# El 'data' será: List[ParetoItem]
+
+# backend/app/schemas.py
+
+class QfdItem(BaseModel):
+    customer_req: str = Field(..., description="QUÉ: Requerimiento del cliente (ej: 'Fácil de abrir')")
+    weight: int = Field(..., ge=1, le=10, description="Importancia para el cliente (1-5 o 1-10)")
+    # Relación: 9 (Fuerte), 3 (Media), 1 (Débil), 0 (Nula)
+    relationships: Dict[str, int] = Field(..., description="Relación con los CÓMOs. Clave=NombreTecnico")
+
+class QfdParams(BaseModel):
+    technical_reqs: List[str] = Field(..., description="Lista de los CÓMOs (Requerimientos Técnicos)")
+
+# El 'data' será: List[QfdItem]
+
+# backend/app/schemas.py (Añade esto)
+
+class RegressionParams(BaseModel):
+    target_column: str = Field(..., description="La variable dependiente (Y) que queremos predecir.")
+    # Opcional: Lista de columnas a usar como X. Si se omite, usa todas las numéricas restantes.
+    predictors: Optional[List[str]] = Field(None, description="Lista de variables independientes (Xs).")
+
+# backend/app/schemas.py
+
+class RsmParams(BaseModel):
+    target_column: str = Field(..., description="Variable de respuesta (Y) a optimizar.")
+    factors: List[str] = Field(..., description="Lista de factores (Xs). Idealmente 2 para visualización 3D.")
+    goal: Literal["maximize", "minimize"] = Field("maximize", description="Objetivo de la optimización.")
+
+# El 'data' es una lista de resultados experimentales: 
+# [{"Temp": 20, "Presion": 100, "Yield": 80}, ...]
+
+# backend/app/schemas.py (Añade esto)
+
+class HypothesisParams(BaseModel):
+    test_type: Literal["1_sample", "2_sample", "paired"] = Field(..., description="Tipo de prueba T")
+    target_value: Optional[float] = Field(None, description="Valor meta (solo para 1_sample)")
+    alpha: float = Field(0.05, description="Nivel de significancia (0.05 = 95% confianza)")
+    # Nombres de columnas opcionales (si no se envían, el sistema intenta adivinar)
+    group_column: Optional[str] = None 
+    value_column: Optional[str] = None
+    column_1: Optional[str] = None # Para Paired (ej: 'Antes')
+    column_2: Optional[str] = None # Para Paired (ej: 'Despues')
+
+# backend/app/schemas.py
+
+class NormalityTestParams(BaseModel):
+    alpha: float = Field(0.05, description="Nivel de significancia (ej: 0.05 para 95% confianza)")
+    # Opcional: Elegir método específico si se desea
+    method: Literal["auto", "anderson", "shapiro"] = "auto"
+
+# El 'data' es una lista simple de valores: [{"valor": 10}, {"valor": 12}...]
+
+# backend/app/schemas.py
+
+class ChiSquareParams(BaseModel):
+    row_column: str = Field(..., description="Nombre de la columna para las filas (ej: 'Turno')")
+    col_column: str = Field(..., description="Nombre de la columna para las columnas (ej: 'Defecto')")
+    alpha: float = Field(0.05, description="Nivel de significancia")
+
+# El 'data' es la lista cruda: [{"Turno": "A", "Defecto": "Si"}, {"Turno": "A", "Defecto": "No"}...]
+
+# backend/app/schemas.py
+
+class BscItem(BaseModel):
+    perspective: Literal["Financiera", "Cliente", "Procesos Internos", "Aprendizaje y Crecimiento"] = Field(..., description="Una de las 4 perspectivas del BSC")
+    kpi: str = Field(..., description="Nombre del indicador (ej: ROI, Satisfacción)")
+    target: float = Field(..., description="Meta esperada")
+    actual: float = Field(..., description="Valor real obtenido")
+    # Opcional: 'higher_is_better' (True/False). Por defecto asumimos que MÁS es MEJOR.
+    higher_is_better: bool = Field(True, description="True si queremos maximizar, False si queremos minimizar (ej: Defectos)")
+
+# El 'data' será: List[BscItem]
+
+# backend/app/schemas.py
+
+class PmiItem(BaseModel):
+    text: str = Field(..., description="La idea o aspecto a evaluar")
+    type: Literal["Plus", "Minus", "Interesting"] = Field(..., description="Clasificación: Plus (Positivo), Minus (Negativo), Interesting (Interesante)")
+    weight: int = Field(1, ge=1, le=10, description="Peso o impacto del punto (1-10). Por defecto 1.")
+
+# El 'data' será: List[PmiItem]
+
+# ... (todo el código que ya tenías antes) ...
+
+# Agrega esto al final:
+class RecommendationRequest(BaseModel):
+    phase: str = Field(..., description="Fase DMAIC (Define, Measure, Analyze, Improve, Control)")
+    description: str = Field(..., description="Descripción del problema para que la IA recomiende")

@@ -1,54 +1,31 @@
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
-from app.schemas import AnalysisRequest, AnalysisResult
-from app.services.tool_factory import ToolFactory
-from fastapi import HTTPException
+from app.core.database import create_db_and_tables
+from app.api import analysis_routes # Importamos las rutas que acabamos de crear
 
-# Inicializar la aplicación
 app = FastAPI(
-    title="Six Sigma Desktop Backend",
-    description="Motor de cálculo e IA para herramientas DMAIC",
+    title="Six Sigma Desktop Engine",
     version="1.0.0"
 )
 
-# Configuración de CORS (Permite que Electron hable con Python)
-origins = [
-    "http://localhost",
-    "http://localhost:3000",  # Puerto común de React/Electron en desarrollo
-    "*"                       # En producción, esto se puede restringir más
-]
-
+# Configuración CORS
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=origins,
+    allow_origins=["*"],
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
 )
 
+# Evento de inicio: Crear tablas en la DB
+@app.on_event("startup")
+def on_startup():
+    create_db_and_tables()
+
+# CONECTAR LAS RUTAS (El paso clave)
+# Ahora las URLs serán: /api/v1/analyze, /api/v1/recommend
+app.include_router(analysis_routes.router, prefix="/api/v1", tags=["Herramientas Six Sigma"])
+
 @app.get("/")
 def read_root():
-    return {"message": "Backend Six Sigma Operativo", "status": "ok"}
-
-@app.get("/health")
-def health_check():
-    return {"status": "running"}
-
-@app.post("/api/v1/analyze", response_model=AnalysisResult)
-def run_analysis(request: AnalysisRequest):
-    try:
-        # 1. Llamar a la fábrica para obtener la clase correcta
-        ToolClass = ToolFactory.get_tool(request.tool_name)
-        
-        # 2. Instanciar la herramienta con los datos
-        tool_instance = ToolClass(data=request.data, params=request.parameters)
-        
-        # 3. Ejecutar análisis
-        result = tool_instance.analyze()
-        
-        return result
-
-    except ValueError as e:
-        raise HTTPException(status_code=400, detail=str(e))
-    except Exception as e:
-        raise HTTPException(status_code=500, detail=f"Error interno: {str(e)}")
+    return {"system": "Online", "database": "SQLite Connected"}
