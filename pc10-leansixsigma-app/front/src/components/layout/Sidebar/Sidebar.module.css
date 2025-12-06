@@ -1,0 +1,87 @@
+.sidebar {
+  width: 280px;
+  height: 100vh;
+  background-color: #f8f9fa; /* Fondo gris claro general */
+  display: flex;
+  flex-direction: column;
+  border-right: 1px solid #e0e0e0;
+  overflow-y: auto;
+  font-family: 'Segoe UI', sans-serif;
+  flex-shrink: 0; /* Evita que se encoja */
+}
+
+.title {
+  font-size: 1.2rem;
+  font-weight: bold;
+  padding: 20px;
+  color: #000;
+  margin-bottom: 10px;
+}
+
+.phaseContainer {
+  margin-bottom: 2px; /* Pequeña separación entre bloques negros */
+}
+
+.phaseButton {
+  width: 90%;
+  margin: 0 auto; /* Centrado como en la imagen */
+  padding: 12px 15px;
+  background-color: #1a1a1a; /* Fondo negro */
+  color: #888; /* Texto gris por defecto */
+  border: none;
+  border-radius: 6px;
+  text-align: left;
+  cursor: pointer;
+  font-weight: 600;
+  font-size: 1rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  transition: all 0.2s;
+}
+
+.phaseButton:hover {
+  color: white;
+}
+
+.phaseButton.active {
+  color: white; /* Texto blanco cuando está activo */
+  background-color: #111; /* Negro un poco más intenso */
+}
+
+/* El triangulito (opcional, la imagen lo tiene sutilmente) */
+.arrow {
+  font-size: 0.8rem;
+  transition: transform 0.3s;
+}
+
+.arrow.rotated {
+  transform: rotate(180deg);
+}
+
+.toolsList {
+  padding: 10px 20px 20px 30px; /* Indentación */
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  animation: slideDown 0.3s ease-out;
+}
+
+.toolLink {
+  color: #999; /* Gris claro */
+  text-decoration: none;
+  font-size: 0.95rem;
+  padding: 5px 0;
+  cursor: pointer;
+  transition: color 0.2s;
+}
+
+.toolLink:hover {
+  color: #3b82f6; /* Azul al pasar el mouse */
+  font-weight: 500;
+}
+
+@keyframes slideDown {
+  from { opacity: 0; transform: translateY(-10px); }
+  to { opacity: 1; transform: translateY(0); }
+}

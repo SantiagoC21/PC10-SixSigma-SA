@@ -1,0 +1,36 @@
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 15px 30px;
+  background-color: white;
+  border-bottom: 1px solid #eee; /* Opcional: línea sutil abajo */
+  height: 70px; /* Altura fija para calcular el resto de la pantalla */
+  flex-shrink: 0;
+}
+
+.brand {
+  background-color: #111827; /* Color oscuro (casi negro) */
+  color: white;
+  padding: 8px 16px;
+  border-radius: 6px;
+  font-weight: 600;
+  font-size: 0.95rem;
+  border: none;
+  cursor: pointer;
+}
+
+.profile {
+  background-color: #f3f4f6; /* Gris muy claro */
+  color: #4b5563; /* Gris texto */
+  padding: 8px 16px;
+  border-radius: 6px;
+  font-size: 0.9rem;
+  font-weight: 500;
+  border: none;
+  cursor: pointer;
+}
+
+.profile:hover {
+  background-color: #e5e7eb;
+}

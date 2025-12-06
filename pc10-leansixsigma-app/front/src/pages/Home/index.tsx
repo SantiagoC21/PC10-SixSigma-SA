@@ -1,29 +1,40 @@
 // src/pages/Home/index.tsx
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { askAI } from '../../api/client';
 import './Home.css';
 
 export const Home = () => {
   const [problem, setProblem] = useState('');
   const navigate = useNavigate();
 
-  const handleContinue = () => {
+  const handleContinue = async () => {
     if (!problem.trim()) return;
+
+    try {
+      const aiResponse = await askAI('Define', problem);
+      console.log('Respuesta IA (Define):', aiResponse);
+
+      // Navegar a la pantalla Definir pasando también las recomendaciones de la IA
+      navigate('/define', { 
+        state: { 
+          initialProblem: problem,
+          defineRecommendations: aiResponse.recommendations
+        } 
+      });
+    } catch (error) {
+      console.error('Error llamando a askAI:', error);
+      // Si falla la IA, igual navegamos solo con el problema inicial
+      navigate('/define', { state: { initialProblem: problem } });
+    }
 
     // Navegar a la siguiente ruta (ej: crear proyecto)
     // Pasamos el problema como "state" para que la siguiente pantalla lo reciba
     // y pueda preguntarle a la IA.
-    navigate('/projects/create', { state: { initialProblem: problem } });
   };
 
   return (
     <div className="home-container">
-      {/* Header Superior */}
-      <header className="header">
-        <div className="brand">SixSigma Assistant</div>
-        <div className="profile-btn">Perfil / Ayuda</div>
-      </header>
-
       {/* Contenido Central */}
       <main className="main-content">
         <div className="main-inner">

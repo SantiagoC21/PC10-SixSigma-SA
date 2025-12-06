@@ -1,17 +1,25 @@
 import { HashRouter, Routes, Route } from 'react-router-dom';
+import { MainLayout } from './components/layout/MainLayout';
 import { Home } from './pages/Home';
+import { DefinePage } from './pages/Define';
+import CostTreeApp from './pages/Tools/cost_tree';
+
 // import { CreateProject } from './pages/Projects/CreateProject'; (La crearemos luego)
 
 function App() {
   return (
     <HashRouter>
-      <Routes>
-        {/* Ruta Inicial */}
-        <Route path="/" element={<Home />} />
-        
-        {/* Futura ruta donde llegará el botón "Continuar" */}
-        {/* <Route path="/projects/create" element={<CreateProject />} /> */}
-      </Routes>
+      <MainLayout>
+          <Routes>
+            
+            {/* Ruta Inicial */}
+            <Route path="/" element={<Home />} />
+            {/* Pantalla Definir donde se verán las recomendaciones y el sidebar */}
+            <Route path="/define" element={<DefinePage />} />
+            {/* Herramienta Árbol de Costos */}
+            <Route path="/tools/cost_tree" element={<CostTreeApp />} />
+          </Routes>
+      </MainLayout>
     </HashRouter>
   );
 }
