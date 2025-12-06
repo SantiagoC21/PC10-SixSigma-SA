@@ -1,0 +1,91 @@
+.container {
+  padding: 30px;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.header {
+  border-bottom: 1px solid #eee;
+  padding-bottom: 15px;
+}
+
+.title {
+  font-size: 1.8rem;
+  color: #111;
+  margin-bottom: 5px;
+}
+
+.description {
+  color: #666;
+}
+
+.content {
+  display: flex;
+  gap: 30px;
+  flex: 1;
+  min-height: 0; /* Vital para scroll */
+}
+
+/* Panel de Entrada (Izquierda) */
+.inputPanel {
+  flex: 0 0 350px; /* Ancho fijo */
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+  background: white;
+  padding: 20px;
+  border-radius: 8px;
+  border: 1px solid #e5e7eb;
+}
+
+.label {
+  font-weight: 600;
+  font-size: 0.9rem;
+  color: #374151;
+}
+
+.textArea {
+  flex: 1;
+  padding: 12px;
+  border: 1px solid #d1d5db;
+  border-radius: 6px;
+  font-family: monospace;
+  font-size: 0.9rem;
+  resize: none;
+}
+
+.helperText {
+  font-size: 0.8rem;
+  color: #6b7280;
+  background: #f3f4f6;
+  padding: 8px;
+  border-radius: 4px;
+}
+
+/* Panel de Resultados (Derecha) */
+.resultPanel {
+  flex: 1;
+  background: white;
+  border-radius: 8px;
+  border: 1px solid #e5e7eb;
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+}
+
+.summaryBox {
+  margin-bottom: 20px;
+  padding: 15px;
+  background-color: #ecfdf5;
+  border: 1px solid #a7f3d0;
+  border-radius: 6px;
+  color: #065f46;
+}
+
+.chartContainer {
+  flex: 1;
+  min-height: 300px;
+  position: relative;
+}
