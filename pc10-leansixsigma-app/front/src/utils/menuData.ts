@@ -5,96 +5,61 @@ export const DMAIC_STRUCTURE = [
     phase: "Definir",
     id: "Define",
     tools: [
-      { name: "Arbol de Costos", path: "cost_tree" },
-      { name: "Brainstorming", path: "brainstorming" },
-      { name: "Grafico de Gantt", path: "gantt" },
-      { name: "Costo y Beneficio", path: "cost_benefit" },
-      { name: "Diagrama de Afinidades", path: "affinity_diagram" },
-      { name: "Mapa de Procesos", path: "process_map" },
-      { name: "Mapa de Responsabilidades", path: "responsabilities_map" },
-      { name: "QFD", path: "QFD" },
-      { name: "PMI", path: "PMI" }
+      { name: "Project Charter", path: "project_charter" },
+      { name: "SIPOC", path: "sipoc" },
+      { name: "Voz del Cliente", path: "voice_of_customer" },
+      { name: "La casa de calidad (QFD)", path: "qfd" }
     ]
   },
   {
     phase: "Medir",
     id: "Measure",
     tools: [
-      { name: "Muestreo", path: "sampling" }, 
-      { name: "Arbol de Costos", path: "cost_tree" },
-      { name: "Arbol de Estructura", path: "tree_structure" },
-      { name: "Diagrama de Caja", path: "boxplot" },
-      { name: "Brainstorming", path: "brainstorming" },
-      { name: "Z Bench", path: "z_bench" },
-      { name: "Grafico de Gantt", path: "gantt" },
-      { name: "Diagrama de Dispersión", path: "scatter_diagram" },
-      { name: "Diagrama de Radar", path: "Radar Chart" },
-      { name: "Entrevistas", path: "interviews" },
-      { name: "Estratificaciones", path: "estratification" },
+      { name: "Estratificaciones", path: "stratification" },
+      { name: "Muestreo", path: "muestreo" },
+      { name: "Pareto / ABC", path: "pareto" },
       { name: "Gage R&R", path: "gage_rr" },
-      { name: "Grafico de series temporales", path: "series_graph" },
-      { name: "Histograma", path: "histogram" },
-      { name: "Intervalo de Confianza", path: "confidence_interval" },
-      { name: "Pareto - ABC", path: "abc_pareto" },
-      { name: "Prueba de Normalidad", path: "normality" }
+      { name: "Diagrama de Radar", path: "radar" },
+      { name: "Gráfico de series de tiempo (Run Chart)", path: "run_chart" },
+      { name: "Diagrama de dispersión", path: "scatter" },
+      { name: "Capacidades / Z bench", path: "capability" }
     ]
   },
   {
     phase: "Analizar",
     id: "Analyze",
     tools: [
-      { name: "ANOVA", path: "anova" },
-      { name: "Diagrama de Caja", path: "boxplot" },
-      { name: "Brainstorming", path: "brainstorming" },
-      { name: "Grafico de Gantt", path: "gantt" },
-      { name: "Diagrama de Afinidades", path: "affinity_diagram" },
-      { name: "Diagrama de Experimentos", path: "affinity_diagram" },
-      { name: "Entrevistas", path: "interviews" },
-      { name: "Diagrama Causa-Efecto", path: "ishikawa" },
-      { name: "Estratificaciones", path: "estratification" },
-      { name: "Análisis de Modo y Efecto de Falla", path: "fmea" },
-      { name: "Grafico de series temporales", path: "series_graph" },
-      { name: "Histograma", path: "histogram" },
-      { name: "Intervalo de Confianza", path: "confidence_interval" },
-      { name: "Mapa de Procesos", path: "process_map" },
-      { name: "Matriz de Causa Efecto", path: "cause_effect_matrix" },
-      { name: "Pareto - ABC", path: "abc_pareto" },
+      { name: "Estratificaciones", path: "stratification" },
+      { name: "Pareto / ABC", path: "pareto" },
+      { name: "Prueba de Chi-quadrado", path: "chi_square" },
+      { name: "Diseño de experimentos (DOE)", path: "doe" },
       { name: "Regresión", path: "regression" },
       { name: "Prueba de hipótesis", path: "hypothesis" },
-      { name: "Prueba de Chi-quadrado", path: "chi_square" }
+      { name: "Gráfico de series de tiempo (Run Chart)", path: "run_chart" },
+      { name: "Análisis de Modo y Efecto de Falla (FMEA)", path: "fmea" },
+      { name: "Análisis de varianza (ANOVA)", path: "anova" }
     ]
   },
   {
     phase: "Mejorar",
     id: "Improve",
     tools: [
-      
-      { name: "Muestreo", path: "sampling" },
-      { name: "Análisis de Riesgos", path: "risk_analysis" },
-      { name: "Z Bench", path: "z_bench" },
-      { name: "Grafico de Gantt", path: "gantt" },
-      { name: "Costo y Beneficio", path: "cost_benefit" },
-      { name: "Diagrama de Experimentos", path: "affinity_diagram" },
-      { name: "Análisis de Modo y Efecto de Falla", path: "fmea" },
-      { name: "Intervalo de Confianza", path: "confidence_interval" },
-      { name: "Pareto - ABC", path: "abc_pareto" },
+      { name: "Muestreo", path: "muestreo" },
+      { name: "Análisis de riesgos", path: "risk_analysis" },
+      { name: "Diseño de experimentos (DOE)", path: "doe" },
       { name: "Regresión", path: "regression" },
-      { name: "Superficie de Respuesta", path: "rsm" }
+      { name: "Pareto / ABC", path: "pareto" },
+      { name: "Análisis de Modo y Efecto de Falla (FMEA)", path: "fmea" },
+      { name: "Capacidades / Z bench", path: "capability" }
     ]
   },
   {
     phase: "Controlar",
     id: "Control",
     tools: [
-      { name: "Z Bench", path: "z_bench" },
-      { name: "Control Estadístico de Procesos", path: "cep" },
-      { name: "Grafico de Gantt", path: "gantt" },
-      { name: "Costo y Beneficio", path: "cost_benefit" },
-      { name: "Intervalo de Confianza", path: "confidence_interval" },
-      { name: "Mapa de Responsabilidades", path: "responsabilities_map" },
-      { name: "Plan de Control", path: "control_plan" },
+      { name: "CEP (control estadístico de procesos)", path: "spc" },
       { name: "Balanced Scorecard", path: "bsc" },
-      { name: "PMI", path: "PMI" }
+      { name: "Capacidades / Z bench", path: "capability" }
     ]
   }
 ];

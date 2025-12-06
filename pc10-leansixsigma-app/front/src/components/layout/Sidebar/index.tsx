@@ -63,7 +63,7 @@ export const Sidebar = () => {
               <div className={styles.toolsList}>
                 {tools.map((tool) => (
                   <div
-                    key={tool.name}
+                    key={tool.path}
                     className={styles.toolLink}
                     onClick={() => handleToolClick(tool.path)}
                   >
